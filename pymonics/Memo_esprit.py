@@ -40,7 +40,7 @@ import math as math
 import cmath
 
 
-class Memo_esprit():
+class Memo_esprit:
     def frequency_detection_byCSV(self,samplingFrequency, filepath, fileheader=None, autocorrelationMatrixSize=100):
         # reading uploaded input csv file
         inputSignal = pd.read_csv(filepath, header=fileheader)
@@ -50,8 +50,7 @@ class Memo_esprit():
         inputDataSamples = np.transpose(inputDataSamples)
         #print(inputDataSamples.shape)		
         return self.detectionAlgorithm(samplingFrequency, inputDataSamples, autocorrelationMatrixSize)
-        # fs=2400 # sampling frequency
-        # print(inputDataSamples)
+
         # frequency detection by passing signal string
 
     def frequency_detection_byString(self,samplingFrequency, inputSignalString, autocorrelationMatrixSize=100):
@@ -217,4 +216,3 @@ class Memo_esprit():
         # print(namp)
         # print(amplitudes)
         return amplitudes, frequencies
-		

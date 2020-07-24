@@ -1,6 +1,6 @@
 import math as math
 
-class Passive_filters():
+class Passive_filters:
     """
     single_tuned_filter:
     Single Tuned filter design. returns [C,L,R]

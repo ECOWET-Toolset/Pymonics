@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
   name = 'pymonics',
   packages = ['pymonics'],
-  version = '0.1',
+  version = '0.3',
   license='MIT',
   description = 'A Powersystems harmonic estimation and filter design package for Python',   
   author = 'Venkatesh Pampana & Ankit Srivastava',
@@ -16,7 +16,7 @@ setuptools.setup(
   install_requires=[ 
           'pandas',
           'numpy',
-		  'scipy',
+          'scipy',
       ],
   classifiers=[
     'Development Status :: 4 - Beta', 
