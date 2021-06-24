@@ -6,7 +6,16 @@ This tool could be used to:
 - detect frequencies and amplitudes including harmonic frequencies
 - Generate sampling virtual signals of desired frequency components and amplitudes with desired length
 - Perform basic filter designing
- 
+
+# Citing Pymonics
+If you have used our tool and would like to cite it in your publications, please refer following paper:
+```
+A. K. Srivastava, A. N. Tiwari, S. N. Singh, V. Pampana and M. Duchon, 
+"Harmonic Frequency Estimation with MEMO-ESPRIT Technique using MATLAB and Python," 
+2020 IEEE 7th Uttar Pradesh Section International Conference on Electrical, Electronics 
+and Computer Engineering (UPCON), 2020, pp. 1-4, doi: 10.1109/UPCON50219.2020.9376423.
+```
+
 Detailed Example tutorial coming soon...
 
 
@@ -23,3 +32,8 @@ inputSignal="1.555037203,1.408682404,1.082233181,0.800207957,0.68369491,0.669075
                
 print(harmonicDetectAlogorithm.frequency_detection_byString(2400,inputSignal))
 ```
+Feel free to try our sample web application based on python flask library. for live demo of this app visit: https://ecowet.venkateshpampan.repl.co 
+
+![pymonics webapp](examples/Pymonics_Web_demo_app/pymonics_web_app_screenshot.png)
+
+If you would like to comtribute in this project, feel free to send us your expression of interest.

@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+    <script src="static/chart.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <title>Pymonics Signal Analyzer</title>
+    <style>
+      form {
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+    
+      input {
+        font-size: 28px;
+        margin-top: 20px;
+      }
+    
+      input[type=signal] {
+        width: 90%;
+      }
+    
+      input[type=frequency] {
+        width: 90%;
+      }
+
+      
+    
+      input[name=submit] {
+        background-color: black;
+        color: white;
+        width: 400px;
+      }
+
+      input[value='Try Sample'] {
+        background-color: black;
+        color: white;
+        width: 200px;
+      }
+
+      input[type=filter] {
+        font-size:15px;
+        text-align: center;
+      }
+
+      input[Value=Calculate] {
+        background-color: black;
+        color: white;
+        width: 150px;
+      }
+
+      /* bootstrap-alert.css https://gist.github.com/EvanHerman/315952ebf371cb83ee9db6c54499933d */
+      .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+      }
+    
+      .alert h4 {
+        margin-top: 0;
+        color: inherit;
+      }
+    
+      .alert .alert-link {
+        font-weight: bold;
+      }
+    
+      .alert>p,
+      .alert>ul {
+        margin-bottom: 0;
+      }
+    
+      .alert>p+p {
+        margin-top: 5px;
+      }
+    
+      .alert-dismissable,
+      .alert-dismissible {
+        padding-right: 35px;
+      }
+    
+      .alert-dismissable .close,
+      .alert-dismissible .close {
+        position: relative;
+        top: -2px;
+        right: -21px;
+        color: inherit;
+      }
+    
+      .alert-success {
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+        color: #3c763d;
+      }
+    
+      .alert-success hr {
+        border-top-color: #c9e2b3;
+      }
+    
+      .alert-success .alert-link {
+        color: #2b542c;
+      }
+    
+      .alert-info {
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+        color: #31708f;
+      }
+    
+      .alert-info hr {
+        border-top-color: #a6e1ec;
+      }
+    
+      .alert-info .alert-link {
+        color: #245269;
+      }
+    
+      .alert-warning {
+        background-color: #fcf8e3;
+        border-color: #faebcc;
+        color: #8a6d3b;
+      }
+    
+      .alert-warning hr {
+        border-top-color: #f7e1b5;
+      }
+    
+      .alert-warning .alert-link {
+        color: #66512c;
+      }
+    
+      .alert-danger {
+        background-color: #f2dede;
+        border-color: #ebccd1;
+        color: #a94442;
+      }
+    
+      .alert-danger hr {
+        border-top-color: #e4b9c0;
+      }
+    
+      .alert-danger .alert-link {
+        color: #843534;
+      }
+    </style>
+    
+    <div class="container">
+      {% for message in get_flashed_messages() %}
+      <div class="alert alert-warning alert-dismissible fade show">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+	</head>
+	<body>
+    <img src='../static/img/pymonics_header.png' style="width:100%">
+    <table style="width:100%;height: 50%; background-color:#bdd7ee" align="center" id="Table1">
+      <tr style="width:100%; height:30%">
+        
+      </tr>
+      <tr style="width:100%; height:30%">
+        <td>
+          <p>Pymonics is power systems harmonic estimation and filter design package written in Python. This is a demo application showing capabilities of library. Enter the collected input signal and its sampling frequency to detect frequency components and amplitudes present in the signal.<a href='../static/Help.pdf' >?</a></p>
+        </td>
+      </tr>
+      <tr>
+        <form class="form-signin" action="/" method="POST">
+          <table style="background-color:#bdd7ee"> 
+            <tr>
+              <td style="width:20%"><h3>Input Sample Signal:</h3></td>
+              <td style="width:60%"><input type="signal" class="form-control" placeholder="{{ placeholder_signal }}" name="signal"></input></td>
+              <td style="width:10%"><h3>Sampling Frequency:</h3></td>
+              <td style="width:10%"><input type="frequency" class="form-control" placeholder="frequency" name="frequency" value="{{ sample_frequency }}"></input></td>
+            </tr>
+            <tr align="center">
+              <td style="width:20%">
+                <input type="submit" name="submit" value="Try Sample" align="center"/>
+              </td>
+              <td style="width:60%" colspan="2">
+                <input type="submit" name="submit" value="Analyze" align="center"/>
+              </td>
+              <td style="width:20%">
+              </td>
+            </tr>
+          </table>  
+        </form>
+      </tr>
+    </table>
+
+    <table style="width:100%;height: 50%" align="center" id="Table1">
+      <tr style="width:100%; height:50%">
+        <td style="width:60%; height:100%">
+          <h2>Detected Frequencies and Amplitudes</h2>
+          <table style="width:100%" border="5px" >
+            <tr>
+              <td style="background-color:#bdd7ee"><b>Amplitude</b></td>
+              <td style="background-color:#bdd7ee"><b>Frequency</b></td>
+            </tr>
+            {% for amplitude, frequency in signal1 %}
+              <tr>
+                <td>{{ amplitude|join('][') }}</td>
+                <td>{{ frequency|join('][') }}</td>
+              <tr>
+            {% endfor %}
+          </table> 
+        </td>
+        <td style="width:40%; height:100%">
+          <div>
+            <canvas id="myChart" style="height: 100%"></canvas>
+          </div>
+        </td>
+      </tr>
+  </table>
+
+  <table style="width:100%;height: 50%" align="center" id="Table1">
+    <tr style="width:100%; height:50%">
+      <h2>Filter Design:</h2>
+      <td>
+        <form class="form-signin" action="/" method="POST">
+          <table style="width:100%">
+            <tr>
+              <td>Tuning point, <b>h:</b></td>
+              <td><input type="filter" value="{{ h }}" name="h"></td>
+              <td>[harmonic order]</td>
+            </tr>
+            <tr>
+              <td>Reactive power, <b>Qc:</b></td>
+              <td><input type="filter" value="{{ qc }}" name="qc"></td>
+              <td>[MVAr]</td>
+            </tr>
+            <tr>
+              <td>Quality factor, <b>Q:</b></td>
+              <td><input type="filter" value="{{ q }}" name="q"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>System frequency, <b>f:</b></td>
+              <td><input type="filter" value="{{ f }}" name="f"></td>
+              <td>[Hz]</td>
+            </tr>
+            <tr>
+              <td>System voltage, <b>V:</b></td>
+              <td><input type="filter" value="{{ v }}" name="v"></td>
+              <td>[kV]</td>
+            </tr>
+            <tr align="center">
+              <td colspan="3">
+                <input type="submit" name="submit" value="Calculate" align="center"/>
+              </td>
+            </tr>
+          </table> 
+        </form>
+      </td>
+      <td> 
+        <h2>Single Tuned Filter:</h2>
+        <table style="width:100%">
+          <tr>
+            <td>
+              <img src='../static/img/single_tuned_filter.png' style="width:50%">
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td>C: </td>
+                  <td><font color="blue">{{ single[0] }}</font></td>
+                  <td><b> F</b></td>
+                </tr>
+                <tr>
+                  <td>L: </td>
+                  <td><font color="blue">{{ single[1] }}</font></td>
+                  <td><b> H</b></td>
+                </tr>  
+                <tr>
+                  <td>R: </td>
+                  <td><font color="blue">{{ single[2] }}</font></td>
+                  <td><b> Ohm</b></td>
+                </tr>                   
+              </table>
+            </td>
+              
+          </tr>
+        </table>
+      </td>
+      <td>
+        <h2>High Pass Filter:</h2>
+        <table style="width:100%">
+          <tr>
+            <td>
+              <img src='../static/img/highpass_filter.png' style="width:50%">
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td>C: </td>
+                  <td><font color="blue">{{ high_pass[0] }}</font></td>
+                  <td><b> F</b></td>
+                </tr>
+                <tr>
+                  <td>L: </td>
+                  <td><font color="blue">{{ high_pass[1] }}</font></td>
+                  <td><b> H</b></td>
+                </tr>  
+                <tr>
+                  <td>R: </td>
+                  <td><font color="blue">{{ high_pass[2] }}</font></td>
+                  <td><b> Ohm</b></td>
+                </tr>                   
+              </table>
+            </td>
+              
+          </tr>
+        </table>
+      </td>
+    </tr>
+</table>
+
+  <label id="nComponents1" name="nComponents" style="display: none;"></label>
+    
+  {% for i in range(frequencies|length): %}
+  <label id="frequencies_{{i}}" name="{{ frequencies[i] }}"></label>
+  {% endfor %}
+
+  {% for i in range(amplitudes|length): %}
+  <label id="amplitudes_{{i}}" name="{{ amplitudes[i] }}" style="display: none;"></label>
+  {% endfor %}
+
+  <script>
+    // https://www.youtube.com/watch?v=sE08f4iuOhA
+    // https://stackoverflow.com/questions/55278747/mapping-data-from-getjson-response-in-chart-js
+    // https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/#2-line-chart
+    //var nComponents = document.getElementById("nComponents")
+    var nComponents = {{ nComponents }}
+    console.log("Hello")
+    console.log(nComponents)
+    var harmonics = []
+    var frec = []
+    var ampl = []
+    //for (var i = 0; i < 24; i++) {
+    for (var i = 0; i < nComponents; i++) {
+      //for (var i = 0; i < 33; i++) {
+      var frequencies = document.getElementById("frequencies_" + i).getAttribute("name").replace(/[\[\]']+/g,'')
+      var amplitudes = document.getElementById("amplitudes_" + i).getAttribute("name").replace(/[\[\]']+/g,'')
+      harmonics.push({
+        x: frequencies,
+        y: amplitudes
+        //x: 1,
+        //y: 1
+      });
+      frec.push(frequencies)
+      ampl.push(amplitudes)
+      //frec.push(1)
+      //ampl.push(1)
+      console.log(harmonics)
+    }
+    console.log(harmonics)
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      //labels: ['0:00','0:15','0:30','0:45','1:00','1:15','1:30','1:45','2:00','2:15','2:30','2:45','3:00','3:15','3:30','3:45','4:00','4:15','4:30','4:45','5:00','5:15','5:30','5:45','6:00','6:15','6:30','6:45','7:00','7:15','7:30','7:45','8:00','8:15','8:30','8:45','9:00','9:15','9:30','9:45','10:00','10:15','10:30','10:45','11:00','11:15','11:30','11:45','12:00','12:15','12:30','12:45','13:00','13:15','13:30','13:45','14:00','14:15','14:30','14:45','15:00','15:15','15:30','15:45','16:00','16:15','16:30','16:45','17:00','17:15','17:30','17:45','18:00','18:15','18:30','18:45','19:00','19:15','19:30','19:45','20:00','20:15','20:30','20:45','21:00','21:15','21:30','21:45','22:00','22:15','22:30','22:45','23:00','23:15','23:30','23:45'],
+      data: {
+        //labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
+        labels: frec.reverse(),
+        datasets: [{
+          label: 'Harmonics',
+          //data: dispatchD,
+          //data: amplitudes,
+          //data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
+          data: ampl.reverse(),
+          borderColor: "#3e95cd",
+          fill: false,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        bezierCurve: true,
+        scales: {
+          yAxes: [{
+            ticks: {
+              //max: 25,
+              min: 0
+              //beginAtZero: true
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Amplitude'
+            }
+          }],
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Frequency'
+            }
+          }]
+        },
+        // https://stackoverflow.com/questions/21389341/disable-animation-with-charts-js
+        animation: {
+          duration: 0
+        }
+      }
+    });
+  </script>
+  </body>
+</html>
