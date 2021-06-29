@@ -27,7 +27,7 @@ plt.show()
 #np.savetxt('inputSignalFile_withNoise.csv', cosNoiseSig, delimiter=',')
 #harmonic detection
 harmonicDetectAlogorithm=pymo.Memo_esprit()
-passivefilters=pymo.Passive_filters()
+
 #frequency detection by passing csv file. arguments: sampling frequency used for data collection and location of the csv file
 print(harmonicDetectAlogorithm.frequency_detection_byCSV(2400,'inputSignalFile.csv'))
 
@@ -41,7 +41,7 @@ print(harmonicDetectAlogorithm.frequency_detection_byString(2400,inputSignal))
 #inputSignalSplit=np.array(inputSignal.split(','))
 #print(inputSignalSplit.shape)
 print(harmonicDetectAlogorithm.frequency_detection_byNParray(2400,sinusoidalSig,autocorrelationMatrixSize=50)) ###+++make sure autocoorelationmatrix size is even number
-
+passivefilters=pymo.Passive_filters()
 #Filter Designing
 print(passivefilters.single_tuned_filter(7,2.0,0.8,50.0,11)) #single tuned filter design
 print(passivefilters.high_pass_filter(7,2.0,0.8,50.0,11))  #highpass filter design
