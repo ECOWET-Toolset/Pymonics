@@ -6,10 +6,10 @@ import pprint
 import numpy as np #added Juan
 import pandas as pd
 
-my_secret = os.environ['okkk']
+#my_secret = os.environ['okkk']
 
 web_site = Flask(__name__)
-web_site.secret_key =my_secret
+#web_site.secret_key =my_secret
 
 harmonicDetectAlogorithm=pymo.Memo_esprit()
 
