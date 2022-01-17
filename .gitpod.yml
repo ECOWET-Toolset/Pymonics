@@ -7,7 +7,7 @@ tasks:
   - init: pip install .
   - command: pip install pymonics
   - command: pip install flask
-
+  - command: python /workspace/Pymonics/examples/minimal_example.py
 github:
   prebuilds:
     master: true
